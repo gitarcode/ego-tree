@@ -166,6 +166,8 @@ impl<'a, T: 'a> PartialEq for NodeRef<'a, T> {
 impl<'a, T: 'a> Hash for NodeRef<'a, T> {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         self.id.hash(state);
+        std::ptr::hash(&self.tree, state);
+        std::ptr::hash(&self.node, state);
     }
 }
 

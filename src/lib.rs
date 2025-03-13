@@ -36,6 +36,7 @@
 )]
 
 use std::fmt::{self, Debug, Display, Formatter};
+use std::hash::Hash;
 use std::num::NonZeroUsize;
 
 #[cfg(feature = "serde")]
@@ -159,6 +160,14 @@ impl<'a, T: 'a> PartialEq for NodeRef<'a, T> {
         self.id == other.id
             && std::ptr::eq(self.tree, other.tree)
             && std::ptr::eq(self.node, other.node)
+    }
+}
+
+impl<'a, T: 'a> Hash for NodeRef<'a, T> {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
+        std::ptr::hash(&self.tree, state);
+        std::ptr::hash(&self.node, state);
     }
 }
 
